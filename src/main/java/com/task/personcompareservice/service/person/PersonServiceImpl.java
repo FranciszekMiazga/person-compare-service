@@ -2,7 +2,6 @@ package com.task.personcompareservice.service.person;
 
 import com.task.personcompareservice.dto.PersonDTO;
 import com.task.personcompareservice.dto.UpsertResultDTO;
-import com.task.personcompareservice.mapper.ApiMapper;
 import com.task.personcompareservice.model.Person;
 import com.task.personcompareservice.model.Task;
 import com.task.personcompareservice.repository.PersonRepository;
@@ -13,6 +12,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+
+import static com.task.personcompareservice.mapper.ApiMapper.convertToPerson;
+import static com.task.personcompareservice.mapper.ApiMapper.mapDtoToPerson;
 
 @Service
 @Data
@@ -32,7 +34,7 @@ public class PersonServiceImpl implements PersonService {
 
     @Transactional
     public UpsertResultDTO savePerson(final PersonDTO personDTO) {
-        var person = ApiMapper.convertToPerson(personDTO);
+        var person = convertToPerson(personDTO);
         var personCreated = personRepository.save(person);
 
         final Task task = taskService.createTaskForPerson(personCreated, null);
@@ -64,13 +66,6 @@ public class PersonServiceImpl implements PersonService {
                     personRepository.delete(person);
                     return true;
                 }).orElse(false);
-    }
-
-    private void mapDtoToPerson(PersonDTO dto, Person person) {
-        person.setName(dto.getName());
-        person.setSurname(dto.getSurname());
-        person.setBirthDate(dto.getBirthDate());
-        person.setCompany(dto.getCompany());
     }
 
     private Person clonePerson(Person person) {

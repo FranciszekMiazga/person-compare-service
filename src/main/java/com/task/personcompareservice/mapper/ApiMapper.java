@@ -25,4 +25,11 @@ public class ApiMapper {
         taskDTO.setResults(task.getResults());
         return taskDTO;
     }
+
+    public static void mapDtoToPerson(PersonDTO dto, Person person) {
+        person.setName(dto.getName());
+        person.setSurname(dto.getSurname());
+        person.setBirthDate(dto.getBirthDate());
+        person.setCompany(dto.getCompany());
+    }
 }

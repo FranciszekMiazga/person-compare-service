@@ -18,6 +18,7 @@ public class TaskRunner {
     @Async("taskExecutor")
     protected void runTaskAsync(final Task task, final Person previous, final Person current) {
         task.setStatus(TaskStatus.IN_PROGRESS);
+        taskRepository.save(task);
         for (int i = 1; i <= 10; i++) {
             try {
                 Thread.sleep(1000);
